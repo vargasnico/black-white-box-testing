@@ -1,0 +1,29 @@
+id,descricao,diaE,mesE,anoE,horaE,minE,diaS,mesS,anoS,horaS,minS,vip
+CT62,CE6; VL: entrada 07:59 (limite-1 da abertura),10,3,2025,7,59,10,3,2025,10,0,false
+CT63,CE6; VL: entrada 00:00,10,3,2025,0,0,10,3,2025,10,0,false
+CT64,CE6; valor típico: entrada 04:30,10,3,2025,4,30,10,3,2025,10,0,false
+CT65,CE7; VL: hora de entrada 24,10,3,2025,24,0,11,3,2025,10,0,false
+CT66,CE8; VL: minuto de entrada 60,10,3,2025,10,60,10,3,2025,12,0,false
+CT67,CE8; VL: minuto de entrada -1,10,3,2025,10,-1,10,3,2025,12,0,false
+CT68,CE7; VL: hora de entrada -1,10,3,2025,-1,0,10,3,2025,12,0,false
+CT69,CE10; VL: saída 02:00 (limite inferior do bloqueio),10,3,2025,23,0,11,3,2025,2,0,false
+CT70,CE10; saída 02:30,10,3,2025,23,0,11,3,2025,2,30,false
+CT71,CE10; valor típico: saída 05:00,10,3,2025,23,0,11,3,2025,5,0,false
+CT72,CE10; VL: saída 07:59 (limite superior do bloqueio),10,3,2025,23,0,11,3,2025,7,59,false
+CT73,CE11; VL: hora de saída 24,10,3,2025,23,0,11,3,2025,24,0,false
+CT74,CE11; VL: minuto de saída 60,10,3,2025,10,0,10,3,2025,12,60,false
+CT75,CE11; VL: minuto de saída -1,10,3,2025,10,0,10,3,2025,12,-1,false
+CT76,CE13; VL: saída 1 minuto antes da entrada,10,3,2025,10,0,10,3,2025,9,59,false
+CT77,CE13; saída no dia anterior à entrada,10,3,2025,10,0,9,3,2025,10,0,false
+CT78,CE15; VL: dia de entrada 0,0,3,2025,10,0,10,3,2025,12,0,false
+CT79,CE15; VL: dia de entrada 32,32,3,2025,10,0,1,4,2025,12,0,false
+CT80,CE15; 31/04/2025 (abril tem 30 dias),31,4,2025,10,0,1,5,2025,12,0,false
+CT81,CE18; 29/02/2025 (ano não bissexto),29,2,2025,10,0,1,3,2025,12,0,false
+CT82,CE15; 30/02/2024 (ano bissexto),30,2,2024,10,0,1,3,2024,12,0,false
+CT83,CE16; VL: mês de entrada 0,10,0,2025,10,0,10,3,2025,12,0,false
+CT84,CE16; VL: mês de entrada 13,10,13,2025,10,0,10,3,2025,12,0,false
+CT85,CE17; VL: ano de entrada 0,10,3,0,10,0,10,3,2025,12,0,false
+CT86,CE15; VL: dia de saída 0,10,3,2025,10,0,0,3,2025,12,0,false
+CT87,CE16; VL: mês de saída 13,10,3,2025,10,0,10,13,2025,12,0,false
+CT88,CE18; saída em 29/02/2025 (ano não bissexto),28,2,2025,10,0,29,2,2025,9,0,false
+CT89,CE17; VL: ano de saída 0,10,3,2025,10,0,10,3,0,12,0,false

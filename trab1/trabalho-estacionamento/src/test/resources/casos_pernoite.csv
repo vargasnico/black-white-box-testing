@@ -1,0 +1,25 @@
+id,descricao,diaE,mesE,anoE,horaE,minE,diaS,mesS,anoS,horaS,minS,vip,esperado
+CT38,CE3; VL: saída 08:00 do dia seguinte (não é após 08:00); t=1320,10,3,2025,10,0,11,3,2025,8,0,false,120.00
+CT39,CE4; VL: saída 08:01 do dia seguinte,10,3,2025,10,0,11,3,2025,8,1,false,50.00
+CT40,CE4; valor típico: saída 09:00 do dia seguinte,10,3,2025,10,0,11,3,2025,9,0,false,50.00
+CT41,CE4; VL: saída 23:59 do dia seguinte,10,3,2025,10,0,11,3,2025,23,59,false,50.00
+CT42,CE4; saída 00:00 do 2o dia após a entrada,10,3,2025,10,0,12,3,2025,0,0,false,50.00
+CT43,CE4; VL: saída 01:59 do 2o dia após a entrada,10,3,2025,10,0,12,3,2025,1,59,false,50.00
+CT44,CE4; VL: saída 08:00 do 2o dia (2o marco não ultrapassado),10,3,2025,10,0,12,3,2025,8,0,false,50.00
+CT45,CE4; VL: saída 08:01 do 2o dia (2 pernoites),10,3,2025,10,0,12,3,2025,8,1,false,100.00
+CT46,CE4; VL: saída 08:01 do 3o dia (3 pernoites),10,3,2025,10,0,13,3,2025,8,1,false,150.00
+CT47,CE3; VL: entrada 08:00 e saída 08:00 do dia seguinte (t=1440),10,3,2025,8,0,11,3,2025,8,0,false,130.00
+CT48,CE4; VL: entrada 08:00 e saída 08:01 do dia seguinte,10,3,2025,8,0,11,3,2025,8,1,false,50.00
+CT49,CE3; VL: entrada 23:59 e saída 08:00 do dia seguinte (t=481),10,3,2025,23,59,11,3,2025,8,0,false,55.00
+CT50,CE4; VL: entrada 23:59 e saída 08:01 do dia seguinte,10,3,2025,23,59,11,3,2025,8,1,false,50.00
+CT51,CE3+VIP; VL: saída 08:00 do dia seguinte (t=1320),10,3,2025,10,0,11,3,2025,8,0,true,60.00
+CT52,CE4+VIP; VL: saída 08:01 do dia seguinte,10,3,2025,10,0,11,3,2025,8,1,true,25.00
+CT53,CE4+VIP; 2 pernoites (saída 08:01 do 2o dia),10,3,2025,10,0,12,3,2025,8,1,true,50.00
+CT54,CE3+VIP; VL: entrada 23:59 e saída 08:00 do dia seguinte,10,3,2025,23,59,11,3,2025,8,0,true,27.50
+CT55,CE4; virada de ano: 31/12/2025 22:00 -> 01/01/2026 09:00,31,12,2025,22,0,1,1,2026,9,0,false,50.00
+CT56,CE4; ano bissexto: 28/02/2024 -> 29/02/2024 09:00,28,2,2024,10,0,29,2,2024,9,0,false,50.00
+CT57,CE4; ano não bissexto: 28/02/2025 -> 01/03/2025 09:00,28,2,2025,10,0,1,3,2025,9,0,false,50.00
+CT58,CE4; virada de mês (30 dias): 30/04 -> 01/05 09:00,30,4,2025,10,0,1,5,2025,9,0,false,50.00
+CT59,CE4; virada de mês (31 dias): 31/01 -> 01/02 09:00,31,1,2025,10,0,1,2,2025,9,0,false,50.00
+CT60,CE4; 2 pernoites atravessando 29/02 (bissexto),28,2,2024,10,0,1,3,2024,8,1,false,100.00
+CT61,CE4; 2 pernoites atravessando a virada de ano,31,12,2025,10,0,2,1,2026,8,1,false,100.00
