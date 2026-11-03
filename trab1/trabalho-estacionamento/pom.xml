@@ -14,6 +14,8 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.10.2</junit.version>
+        <!-- código-fonte testado; o perfil v1 troca pela primeira versão -->
+        <codigo.fonte>src/main/java</codigo.fonte>
     </properties>
 
     <dependencies>
@@ -27,11 +29,62 @@
     </dependencies>
 
     <build>
+        <sourceDirectory>${codigo.fonte}</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
+            </plugin>
+
+            <!-- Cobertura de código: mvn test -> target/site/jacoco/index.html -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.14</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Teste de mutação: mvn test-compile org.pitest:pitest-maven:mutationCoverage
+                 -> target/pit-reports/index.html -->
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>1.20.3</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-junit5-plugin</artifactId>
+                        <version>1.2.2</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <targetClasses>
+                        <param>estacionamento.*</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>estacionamento.*</param>
+                    </targetTests>
+                    <outputFormats>
+                        <param>HTML</param>
+                        <param>XML</param>
+                    </outputFormats>
+                    <timestampedReports>false</timestampedReports>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -41,9 +94,9 @@
              mvn test -Pv1   -> executa os mesmos testes sobre a primeira versão (versoes/versao1) -->
         <profile>
             <id>v1</id>
-            <build>
-                <sourceDirectory>versoes/versao1</sourceDirectory>
-            </build>
+            <properties>
+                <codigo.fonte>versoes/versao1</codigo.fonte>
+            </properties>
         </profile>
     </profiles>
 </project>
