@@ -79,6 +79,10 @@
                     <targetTests>
                         <param>estacionamento.*</param>
                     </targetTests>
+                    <!-- DEFAULTS + remoção de condicionais e outros operadores mais fortes -->
+                    <mutators>
+                        <mutator>STRONGER</mutator>
+                    </mutators>
                     <outputFormats>
                         <param>HTML</param>
                         <param>XML</param>
