@@ -1,0 +1,4 @@
+id,descricao,entrada,saida,vip
+CT90,MC/DC linha 31: entrada null (A=V; B=F),,2025-03-10T10:30,false
+CT91,MC/DC linha 31: saida null (A=F; B=V),2025-03-10T10:00,,false
+CT92,MC/DC linha 31: entrada e saida null (A=V; B=V),,,false
