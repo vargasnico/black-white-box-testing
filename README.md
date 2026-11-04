@@ -27,19 +27,18 @@ Alguns achados da fase 2:
 
 ## Estrutura
 
+Projeto Maven (Java 17, JUnit 5):
+
 ```
-trab1/casos_de_teste.pdf              Fase 1: projeto dos casos de teste
-trab1/relatorio_defeitos.pdf          Fase 1: defeitos encontrados na primeira versão
-trab1/trabalho-estacionamento/        Projeto Maven (Java 17, JUnit 5)
-  src/main/java/                      Versão corrigida da CalculadoraTarifa
-  versoes/versao1/                    Primeira versão, com defeitos
-  src/test/java/                      Drivers JUnit parametrizados (@CsvFileSource)
-  src/test/resources/                 Casos de teste em CSV (CT01–CT98)
+src/main/java/         Versão corrigida da CalculadoraTarifa
+src/test/java/         Drivers JUnit parametrizados (@CsvFileSource)
+src/test/resources/    Casos de teste em CSV (CT01–CT98)
+versoes/versao1/       Primeira versão, com defeitos
 ```
 
 ## Como executar
 
-Requisitos: JDK 17 ou superior e Maven 3.9. Os comandos são executados dentro de `trab1/trabalho-estacionamento`.
+Requisitos: JDK 17 ou superior e Maven 3.9.
 
 ```bash
 mvn test
