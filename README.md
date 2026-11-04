@@ -1,4 +1,4 @@
-# Estudo de testes caixa-preta e caixa-branca
+# Testes caixa-preta e caixa-branca
 
 Estudo de verificação e validação de software sobre uma regra de negócio real: o cálculo da tarifa de um
 estacionamento (cortesia de 20 minutos, tarifa fixa até 1 hora, adicional por hora, pernoite e desconto VIP),
@@ -25,12 +25,9 @@ Alguns achados da fase 2:
 - Só 1 dos 7 defeitos reais da fase 1 corresponde a um operador de mutação do PIT. A análise de mutação
   não substitui o projeto por valor limite.
 
-Os detalhes estão nos relatórios listados abaixo.
-
 ## Estrutura
 
 ```
-relatorio/relatorio_t2.pdf            Fase 2: análise de cobertura e de mutação (fonte: relatorio_t2.html)
 trab1/casos_de_teste.pdf              Fase 1: projeto dos casos de teste
 trab1/relatorio_defeitos.pdf          Fase 1: defeitos encontrados na primeira versão
 trab1/trabalho-estacionamento/        Projeto Maven (Java 17, JUnit 5)
@@ -75,4 +72,4 @@ Desenvolvido como os Trabalhos 1 e 2 da disciplina Verificação e Validação d
 ## Autores
 
 - Nícolas Vargas ([@vargasnico](https://github.com/vargasnico))
-- [@PauloTrevisan](https://github.com/PauloTrevisan)
+- Paulo Trevisan ([@PauloTrevisan](https://github.com/PauloTrevisan))
