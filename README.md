@@ -1,55 +1,76 @@
-# Tarifa de Estacionamento — Verificação e Validação de Software (PUCRS)
+# Estudo de testes caixa-preta e caixa-branca
 
-Trabalhos da disciplina **Verificação e Validação de Software** da **PUCRS**, 2026/2.
+Estudo de verificação e validação de software sobre uma regra de negócio real: o cálculo da tarifa de um
+estacionamento (cortesia de 20 minutos, tarifa fixa até 1 hora, adicional por hora, pernoite e desconto VIP),
+implementado na classe Java `CalculadoraTarifa`.
 
-O objeto de teste é a classe `CalculadoraTarifa`, que calcula o ticket de um estacionamento:
-cortesia de 20 minutos, tarifa fixa até 1 hora, adicional por hora, pernoite e desconto VIP.
-O desenvolvimento dos testes foi feito em duas fases.
+O conjunto de testes foi construído em duas fases. Primeiro, os casos foram projetados só a partir da
+especificação (caixa-preta). Depois, esses casos foram avaliados e complementados com base no código
+(caixa-branca).
 
-| Fase | Trabalho | Técnicas | Marco no repositório |
-|------|----------|----------|----------------------|
-| 1 — Caixa-preta | Trabalho 1 | Particionamento em classes de equivalência e análise de valor limite, derivados da especificação. Os 89 casos revelaram 7 defeitos na primeira versão da implementação. | tag `fase-1-caixa-preta` |
-| 2 — Caixa-branca | Trabalho 2 | Cobertura de código com [JaCoCo](https://www.jacoco.org/jacoco/) e teste de mutação com [PIT](https://pitest.org/), complementando o conjunto de casos de teste. | commits após a tag |
+## Resultados
 
-Para ver o repositório exatamente como ao fim da fase 1:
+| Fase | Técnicas | Resultado | Marco |
+|------|----------|-----------|-------|
+| 1 — Caixa-preta | Particionamento em classes de equivalência e análise de valor limite | 89 casos de teste; 7 defeitos encontrados na primeira versão da implementação | tag `fase-1-caixa-preta` |
+| 2 — Caixa-branca | Cobertura de código ([JaCoCo](https://www.jacoco.org/jacoco/)), MC/DC e teste de mutação ([PIT](https://pitest.org/)) | 98 casos; 100% de instruções, linhas e ramos; 42 de 44 mutantes mortos (os 2 restantes são equivalentes) | tag `fase-2-caixa-branca` |
 
-```bash
-git checkout fase-1-caixa-preta
-```
+Alguns achados da fase 2:
+
+- Cobertura de 100% não garante testes eficazes. O truncamento de segundos era executado por todos os casos,
+  mas nenhum verificava o seu efeito.
+- O conjunto padrão de operadores do PIT escondia uma validação que podia ser removida sem nenhum teste
+  falhar. A remoção de condicionais (`STRONGER`) revelou o problema.
+- Os mutantes equivalentes apontaram um ramo redundante no código.
+- Só 1 dos 7 defeitos reais da fase 1 corresponde a um operador de mutação do PIT. A análise de mutação
+  não substitui o projeto por valor limite.
+
+Os detalhes estão nos relatórios listados abaixo.
 
 ## Estrutura
 
-- `t2_2026_2.pdf` — enunciado do Trabalho 2.
-- `relatorio/relatorio_t2.pdf` — relatório do Trabalho 2: análise crítica da cobertura e do teste de mutação,
-  com os novos casos de teste (CT90–CT98). `relatorio_t2.html` é a fonte do PDF (impressão do navegador).
-- `trab1/casos_de_teste.pdf` — projeto dos casos de teste (fase 1).
-- `trab1/relatorio_defeitos.pdf` — defeitos encontrados na primeira versão (fase 1).
-- `trab1/trabalho-estacionamento/` — projeto Maven (Java 17, JUnit 5):
-  - `src/main/java` — versão corrigida da `CalculadoraTarifa`;
-  - `versoes/versao1` — primeira versão, com defeitos;
-  - `src/test` — drivers JUnit parametrizados (`@CsvFileSource`) e os CSVs com os casos.
+```
+relatorio/relatorio_t2.pdf            Fase 2: análise de cobertura e de mutação (fonte: relatorio_t2.html)
+trab1/casos_de_teste.pdf              Fase 1: projeto dos casos de teste
+trab1/relatorio_defeitos.pdf          Fase 1: defeitos encontrados na primeira versão
+trab1/trabalho-estacionamento/        Projeto Maven (Java 17, JUnit 5)
+  src/main/java/                      Versão corrigida da CalculadoraTarifa
+  versoes/versao1/                    Primeira versão, com defeitos
+  src/test/java/                      Drivers JUnit parametrizados (@CsvFileSource)
+  src/test/resources/                 Casos de teste em CSV (CT01–CT98)
+```
 
 ## Como executar
 
-Dentro de `trab1/trabalho-estacionamento`:
+Requisitos: JDK 17 ou superior e Maven 3.9. Os comandos são executados dentro de `trab1/trabalho-estacionamento`.
 
 ```bash
 mvn test
 ```
 
-Executa os testes sobre a versão corrigida e gera o relatório de cobertura em `target/site/jacoco/index.html`.
+Executa os 98 casos sobre a versão corrigida e gera o relatório de cobertura em `target/site/jacoco/index.html`.
 
 ```bash
 mvn test -Pv1
 ```
 
-Executa os mesmos testes sobre a primeira versão (com defeitos).
+Executa os mesmos casos sobre a primeira versão, com defeitos.
 
 ```bash
 mvn test-compile org.pitest:pitest-maven:mutationCoverage
 ```
 
 Executa o teste de mutação e gera o relatório em `target/pit-reports/index.html`.
+
+Para ver o projeto como estava ao fim da fase 1:
+
+```bash
+git checkout fase-1-caixa-preta
+```
+
+## Contexto
+
+Desenvolvido como os Trabalhos 1 e 2 da disciplina Verificação e Validação de Software da PUCRS (2026/2).
 
 ## Autores
 
