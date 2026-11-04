@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Relatório T2 - Cobertura e Mutação</title>
+<style>
+  @page {
+    size: A4;
+    margin: 16mm 14mm 16mm 14mm;
+    @bottom-left { content: "Relatório T2 - Cobertura de Código e Teste de Mutação"; font: 8pt "Segoe UI", sans-serif; color: #666; }
+    @bottom-right { content: "Página " counter(page); font: 8pt "Segoe UI", sans-serif; color: #666; }
+  }
+  body { font-family: "Segoe UI", "DejaVu Sans", Arial, sans-serif; font-size: 9.5pt; color: #1b1b1b; line-height: 1.45; }
+  h1 { color: #1f3a5f; font-size: 21pt; margin: 0 0 4px; line-height: 1.15; }
+  h2 { color: #1f3a5f; font-size: 14pt; margin: 20px 0 6px; break-after: avoid; }
+  h3 { color: #1f3a5f; font-size: 11pt; margin: 14px 0 4px; break-after: avoid; }
+  p { margin: 4px 0 6px; }
+  .sub { color: #444; margin: 0; }
+  code { font-family: Consolas, "DejaVu Sans Mono", monospace; font-size: 8.8pt; }
+  pre { font-family: Consolas, "DejaVu Sans Mono", monospace; font-size: 8.5pt; margin: 4px 0 8px 10px; break-inside: avoid; }
+  table { border-collapse: collapse; width: 100%; margin: 6px 0 10px; font-size: 8.6pt; }
+  thead { display: table-header-group; }
+  tr { break-inside: avoid; }
+  th { background: #1f3a5f; color: #fff; font-weight: 600; padding: 4px 6px; text-align: center; }
+  td { border: 1px solid #c9d3e0; padding: 3px 6px; vertical-align: top; }
+  tbody tr:nth-child(even) td { background: #f2f5fa; }
+  td.c, th.c { text-align: center; }
+  td.id { font-weight: 700; white-space: nowrap; }
+  td.sobr { color: #a4262c; font-weight: 600; }
+  .ok { color: #1e7b34; font-weight: 600; }
+  .nota { font-style: italic; }
+  ul { margin: 2px 0 6px; padding-left: 18px; }
+  li { margin: 1px 0; }
+  .quebra { break-before: page; }
+</style>
+</head>
+<body>
+
+<h1>Relatório - Cobertura de Código e Teste de Mutação</h1>
+<p class="sub">Trabalho 2 · Verificação e Validação de Software · PUCRS · Classe testada: <code>CalculadoraTarifa</code> (cálculo do ticket de estacionamento)</p>
+<p class="sub">Grupo / integrantes: ____________________________________________________</p>
+
+<h2>1. Procedimento</h2>
+<p>Partindo do código e dos 89 casos de teste do Trabalho 1 (projetados por particionamento em classes de equivalência e análise de valor limite), o conjunto de testes foi avaliado com duas técnicas estruturais e complementado em três etapas:</p>
+<ul>
+  <li><b>Etapa A - linha de base:</b> os 89 casos do Trabalho 1 (CT01-CT89), sem alteração.</li>
+  <li><b>Etapa B - cobertura:</b> análise com <b>JaCoCo 0.8.14</b> (cobertura de instruções, linhas e decisões/ramos) e, para as decisões compostas, critério <b>MC/DC</b>. Novos casos CT90-CT96.</li>
+  <li><b>Etapa C - mutação:</b> análise com <b>PIT 1.20.3</b> (<code>pitest-junit5-plugin</code> 1.2.2), primeiro com o conjunto de operadores padrão do plugin e depois com o grupo <code>STRONGER</code>, que usa a remoção de condicionais. Novos casos CT97-CT98.</li>
+</ul>
+<p>Os casos novos seguem o mesmo padrão dos drivers do Trabalho 1 (JUnit 5, <code>@ParameterizedTest</code> + <code>@CsvFileSource</code>) e foram implementados em dois novos drivers: <code>TarifaCoberturaTest</code> (arquivos <code>casos_cobertura_validos.csv</code> e <code>casos_cobertura_invalidos.csv</code>) e <code>TarifaMutacaoTest</code> (<code>casos_mutacao.csv</code>). O código da classe testada não foi alterado. Comandos, no diretório <code>trab1/trabalho-estacionamento</code>:</p>
+<pre>mvn test                                                  # testes + relatório JaCoCo (target/site/jacoco)
+mvn test-compile org.pitest:pitest-maven:mutationCoverage # teste de mutação (target/pit-reports)</pre>
+
+<h2>2. Resumo dos resultados</h2>
+<table>
+  <thead><tr><th>Etapa</th><th>Casos</th><th>Instruções</th><th>Linhas</th><th>Ramos (decisões)</th><th>Mutantes (padrão)</th><th>Mutantes STRONGER</th></tr></thead>
+  <tbody>
+    <tr><td>A - Trabalho 1 (CT01-CT89)</td><td class="c">89</td><td class="c">214/219 (97,7%)</td><td class="c">45/46 (97,8%)</td><td class="c">22/24 (91,7%)</td><td class="c">30/32 (93,8%)</td><td class="c">39/44 (88,6%)</td></tr>
+    <tr><td>B - + cobertura (CT90-CT96)</td><td class="c">96</td><td class="c ok">219/219 (100%)</td><td class="c ok">46/46 (100%)</td><td class="c ok">24/24 (100%)</td><td class="c">30/32 (93,8%)</td><td class="c">41/44 (93,2%)</td></tr>
+    <tr><td>C - + mutação (CT97-CT98)</td><td class="c">98</td><td class="c ok">219/219 (100%)</td><td class="c ok">46/46 (100%)</td><td class="c ok">24/24 (100%)</td><td class="c ok">31/32 (96,9%)</td><td class="c ok">42/44 (95,5%)</td></tr>
+  </tbody>
+</table>
+<p>Os mutantes que restam vivos na etapa C (um no conjunto padrão e dois no STRONGER, todos na linha 56) são <b>equivalentes</b> (seção 4.4). Desconsiderando-os, o escore de mutação é de <b>100%</b> nos dois grupos. Os 98 casos são aprovados.</p>
+
+<h2>3. Análise crítica da cobertura de código</h2>
+
+<h3>3.1 Linha de base (etapa A)</h3>
+<table>
+  <thead><tr><th>Método</th><th>Linha</th><th>Linhas</th><th>Ramos</th><th>Observação</th></tr></thead>
+  <tbody>
+    <tr><td><code>calcular(int, ..., boolean)</code></td><td class="c">24</td><td class="c">3/3</td><td class="c">-</td><td>Interface usada por todos os casos do T1.</td></tr>
+    <tr><td><code>calcular(LocalDateTime, LocalDateTime, boolean)</code></td><td class="c">31</td><td class="c">18/19</td><td class="c">12/14</td><td>Linha 32 nunca executada; 2 ramos da linha 31 não exercitados.</td></tr>
+    <tr><td><code>validarEntrada</code></td><td class="c">69</td><td class="c">3/3</td><td class="c">2/2</td><td></td></tr>
+    <tr><td><code>validarSaida</code></td><td class="c">76</td><td class="c">4/4</td><td class="c">4/4</td><td></td></tr>
+    <tr><td><code>contarPernoites</code></td><td class="c">85</td><td class="c">6/6</td><td class="c">2/2</td><td></td></tr>
+    <tr><td><code>divisaoParaCima</code></td><td class="c">98</td><td class="c">1/1</td><td class="c">-</td><td></td></tr>
+    <tr><td><code>criarDataHora</code></td><td class="c">103</td><td class="c">7/7</td><td class="c">2/2</td><td></td></tr>
+  </tbody>
+</table>
+<p>A única lacuna está no início do método público <code>calcular(LocalDateTime, LocalDateTime, boolean)</code>:</p>
+<pre>31  if (entrada == null || saida == null) {                        // 2 de 4 ramos não exercitados
+32      throw new IllegalArgumentException("Data/hora ... obrigatorias.");  // nunca executada
+33  }</pre>
+
+<h3>3.2 Análise crítica</h3>
+<ul>
+  <li><b>Por que a lacuna existe.</b> Os casos do Trabalho 1 foram derivados da especificação, que descreve a entrada como dia, mês, ano, hora e minuto. Todos usam a sobrecarga com <code>int</code>, que sempre cria objetos <code>LocalDateTime</code> não nulos. A sobrecarga com <code>LocalDateTime</code> também é pública, mas só era exercitada indiretamente; por isso a validação de valores nulos nunca é verdadeira. Esse é um limite típico das técnicas funcionais: elas não enxergam caminhos que existem apenas na implementação.</li>
+  <li><b>MC/DC na linha 31.</b> A decisão tem duas condições, A = <code>entrada == null</code> e B = <code>saida == null</code>. A cobertura de ramos exige apenas um caso verdadeiro e um falso; o MC/DC exige mostrar que cada condição, sozinha, altera o resultado. Os pares escolhidos são: para A, CT93 (F,F) × CT90 (V,F); para B, CT93 (F,F) × CT91 (F,V). CT92 (V,V) completa a tabela-verdade. Como o Java avalia <code>||</code> em curto-circuito, B não chega a ser avaliada em CT90 e CT92.</li>
+  <li><b>MC/DC na linha 78</b> (<code>validarSaida</code>). A decisão <code>!hora.isBefore(FECHAMENTO) &amp;&amp; hora.isBefore(ABERTURA)</code> já satisfazia o critério com os casos do T1, sem casos novos: para A = hora ≥ 02:00, o par CT71 (05:00; V,V → exceção) × CT22 (01:59; F,V → válida); para B = hora &lt; 08:00, o par CT71 × CT38 (08:00; V,F → válida). As demais decisões do código têm uma única condição, e a cobertura de ramos de 100% já equivale ao MC/DC nelas.</li>
+  <li><b>Cobertura de 100% não basta.</b> As linhas 35 e 36 (<code>truncatedTo(ChronoUnit.MINUTES)</code>) já eram executadas por todos os casos, mas nenhum deles verificava o efeito do truncamento: com a interface <code>int</code> os segundos são sempre zero. Se as duas linhas fossem apagadas, os 89 casos continuariam passando. Como a sobrecarga com <code>LocalDateTime</code> aceita segundos e nanossegundos, foram criados casos em que o resultado muda conforme o truncamento seja feito ou não (CT94-CT96). A eficácia deles foi confirmada removendo as chamadas: CT94 e CT96 falham na asserção e CT95 lança exceção.</li>
+</ul>
+
+<h3>3.3 Novos casos de teste (cobertura)</h3>
+<table>
+  <thead><tr><th>ID</th><th>Critério / objetivo</th><th>Entrada</th><th>Saída</th><th>VIP</th><th>t (min)</th><th>Resultado esperado</th></tr></thead>
+  <tbody>
+    <tr><td class="id">CT90</td><td>MC/DC linha 31: A=V, B=F (ramo verdadeiro, linha 32)</td><td>null</td><td>10/03/2025 10:30</td><td class="c">Não</td><td class="c">-</td><td>IllegalArgumentException</td></tr>
+    <tr><td class="id">CT91</td><td>MC/DC linha 31: A=F, B=V</td><td>10/03/2025 10:00</td><td>null</td><td class="c">Não</td><td class="c">-</td><td>IllegalArgumentException</td></tr>
+    <tr><td class="id">CT92</td><td>MC/DC linha 31: A=V, B=V</td><td>null</td><td>null</td><td class="c">Não</td><td class="c">-</td><td>IllegalArgumentException</td></tr>
+    <tr><td class="id">CT93</td><td>MC/DC linha 31: A=F, B=F (chamada direta da sobrecarga)</td><td>10/03/2025 10:00</td><td>10/03/2025 10:21</td><td class="c">Não</td><td class="c">21</td><td>R$ 15,00</td></tr>
+    <tr><td class="id">CT94</td><td>Truncamento: sem truncar, a permanência seria de 20 min (cortesia)</td><td>10/03/2025 10:00:30</td><td>10/03/2025 10:21:10</td><td class="c">Não</td><td class="c">21</td><td>R$ 15,00</td></tr>
+    <tr><td class="id">CT95</td><td>Truncamento: mesmo minuto, segundos da saída menores que os da entrada (sem truncar, a saída seria anterior à entrada)</td><td>10/03/2025 10:00:30</td><td>10/03/2025 10:00:10</td><td class="c">Não</td><td class="c">0</td><td>R$ 0,00</td></tr>
+    <tr><td class="id">CT96</td><td>Truncamento + VIP na fronteira 60/61 min (sem truncar, t seria 60)</td><td>10/03/2025 10:00:30.5</td><td>10/03/2025 11:01:10</td><td class="c">Sim</td><td class="c">61</td><td>R$ 10,00</td></tr>
+  </tbody>
+</table>
+<p>Com esses casos, a cobertura de instruções, linhas e ramos passa a 100% (etapa B na seção 2).</p>
+
+<h2 class="quebra">4. Análise crítica do teste de mutação</h2>
+
+<h3>4.1 Configuração</h3>
+<p>O PIT foi aplicado à classe <code>CalculadoraTarifa</code> com todos os drivers de teste. Foram usados dois grupos de operadores:</p>
+<ul>
+  <li><b>Padrão do plugin</b> (32 mutantes, usado quando o <code>pom.xml</code> não define operadores): limite condicional, negação de condicional, operadores aritméticos, incremento, valores de retorno e remoção de chamadas <code>void</code>.</li>
+  <li><code>STRONGER</code> (44 mutantes), adotado como configuração final no <code>pom.xml</code>: troca a negação de condicionais pela <b>remoção de condicionais</b>, que substitui cada desvio por <code>true</code> e por <code>false</code>, gerando mais mutantes por decisão. Distribuição dos 44 mutantes por operador:</li>
+</ul>
+<table style="width:60%">
+  <thead><tr><th>Operador</th><th>Mutantes</th></tr></thead>
+  <tbody>
+<tr><td>Remoção de condicional (igualdade → false)</td><td class='c'>8</td></tr>
+<tr><td>Remoção de condicional (igualdade → true)</td><td class='c'>8</td></tr>
+<tr><td>Operador aritmético</td><td class='c'>8</td></tr>
+<tr><td>Retorno primitivo</td><td class='c'>4</td></tr>
+<tr><td>Limite condicional</td><td class='c'>4</td></tr>
+<tr><td>Remoção de condicional (comparação → false)</td><td class='c'>4</td></tr>
+<tr><td>Remoção de condicional (comparação → true)</td><td class='c'>4</td></tr>
+<tr><td>Remoção de chamada void</td><td class='c'>2</td></tr>
+<tr><td>Incremento</td><td class='c'>1</td></tr>
+<tr><td>Retorno nulo</td><td class='c'>1</td></tr>
+  </tbody>
+</table>
+<p>Mutantes encerrados por <i>timeout</i> são considerados detectados: na linha 88, trocar a condição do laço <code>while (saida.isAfter(marco))</code> por <code>true</code> gera um laço infinito, que o PIT interrompe.</p>
+
+<h3>4.2 Linha de base (etapa A): mutantes sobreviventes</h3>
+<table>
+  <thead><tr><th>Linha</th><th>Código original</th><th>Mutação</th><th>Grupo</th><th>Diagnóstico</th></tr></thead>
+  <tbody>
+    <tr><td class="c">31</td><td><code>entrada == null</code></td><td>condição substituída por <code>false</code> (nunca rejeita entrada nula)</td><td class="c">STRONGER</td><td>Falta de caso com entrada nula: é a mesma lacuna apontada pelo JaCoCo.</td></tr>
+    <tr><td class="c">31</td><td><code>saida == null</code></td><td>condição removida (nunca rejeita saída nula)</td><td class="c">STRONGER</td><td>Falta de caso com saída nula.</td></tr>
+    <tr><td class="c">103</td><td><code>ano &lt; 1</code></td><td><code>ano &lt;= 1</code> (limite condicional)</td><td class="c">ambos</td><td>Valor limite incompleto: o T1 testou o ano 0 (inválido, CT85 e CT89), mas não o ano 1, primeiro valor válido.</td></tr>
+    <tr><td class="c">56</td><td><code>minutos &lt;= MINUTOS_POR_HORA</code></td><td><code>minutos &lt; MINUTOS_POR_HORA</code> (limite condicional)</td><td class="c">ambos</td><td>Equivalente (seção 4.4).</td></tr>
+    <tr><td class="c">56</td><td><code>minutos &lt;= MINUTOS_POR_HORA</code></td><td>condição substituída por <code>false</code></td><td class="c">STRONGER</td><td>Equivalente (seção 4.4).</td></tr>
+  </tbody>
+</table>
+
+<h3>4.3 Análise crítica</h3>
+<ul>
+  <li><b>O conjunto padrão escondia a fragilidade da linha 31.</b> Com ele, os mutantes da linha 31 são do tipo negação (<code>==</code> → <code>!=</code>). Eles fazem todo caso válido lançar exceção, então qualquer teste os mata, mesmo sem nenhum caso com valor nulo. Só a remoção de condicionais (<code>STRONGER</code>) revela que a validação de nulos poderia ser apagada sem que os testes do T1 percebessem. Por isso o grupo <code>STRONGER</code> foi adotado.</li>
+  <li><b>Cobertura e mutação se complementam.</b> Os dois mutantes da linha 31 foram mortos pelos casos criados na etapa de cobertura (CT90-CT92), sem casos adicionais. Já o mutante da linha 103 sobrevive com 100% de cobertura: a linha é executada (pelo ano 0 e pelos anos válidos), mas nenhum caso distingue <code>&lt; 1</code> de <code>&lt;= 1</code>. A cobertura mede o que é executado; a mutação mede o que é <b>verificado</b>.</li>
+  <li><b>O mutante da linha 103 confirma a importância dos valores limite.</b> Ele corresponde a um defeito plausível de <i>off-by-one</i> que rejeitaria o ano 1, data válida para <code>LocalDateTime</code>. O par de valores limite da fronteira do ano ficou incompleto no T1, e os casos CT97-CT98 o completam.</li>
+  <li><b>Relação com os defeitos reais do Trabalho 1.</b> Dos 7 defeitos da versão 1, só o D1 (<code>&lt;</code> no lugar de <code>&lt;=</code> na cortesia, linha 47) corresponde diretamente a um operador do PIT (limite condicional), e o mutante correspondente é morto por CT04. D3, D5 e D7 também são erros de fronteira, mas em chamadas a <code>isAfter</code>/<code>isBefore</code> do <code>java.time</code>, que o PIT não altera. D2 (fórmula), D4 (<code>return</code> antecipado) e D6 (<code>Math.min</code>) também não pertencem aos operadores disponíveis. Assim, um escore de mutação alto não garante a detecção de todos os tipos de defeito: os casos de valor limite do T1 continuam necessários.</li>
+</ul>
+
+<h3>4.4 Mutantes equivalentes (linha 56)</h3>
+<pre>54  if (pernoites &gt; 0) {
+55      valor = pernoites * TARIFA_PERNOITE;
+56  } else if (minutos &lt;= MINUTOS_POR_HORA) {     // mutantes sobreviventes
+57      valor = TARIFA_FIXA;
+58  } else {
+59      valor = TARIFA_FIXA + ADICIONAL_POR_HORA * divisaoParaCima(minutos - 60, 60);
+    }
+    // divisaoParaCima(d, 60) = (d + 59) / 60   (divisão inteira)</pre>
+<p>A linha 56 só é alcançada com <code>minutos &gt; 20</code> (cortesia tratada antes) e sem pernoite. Uma pernoite exige ao menos 482 minutos (entrada 23:59 e saída 08:01), portanto todo caso com t ≤ 60 chega à linha 56.</p>
+<ul>
+  <li><b><code>&lt;=</code> → <code>&lt;</code>:</b> a diferença ocorre só em t = 60. O original cobra R$ 15,00 pela linha 57; o mutante segue para a linha 59 e cobra 15 + 5 × ((0 + 59) / 60) = 15 + 5 × 0 = <b>R$ 15,00</b>.</li>
+  <li><b>condição → <code>false</code>:</b> para 21 ≤ t ≤ 60, o mutante segue sempre para a linha 59, com d = t − 60 entre −39 e 0, e (d + 59) / 60 tem numerador entre 20 e 59, logo vale 0. Valor: <b>R$ 15,00</b>, igual ao original.</li>
+</ul>
+<p>Nenhuma entrada distingue os mutantes do original, e por isso nenhum caso de teste pode matá-los. Eles mostram que o ramo <code>else if</code> é <b>redundante</b>: a fórmula das horas adicionais já devolve a tarifa fixa para qualquer permanência de até 60 minutos. Uma simplificação possível é remover o ramo; como o objetivo é avaliar a classe entregue, o código não foi alterado.</p>
+
+<h3>4.5 Novos casos de teste (mutação)</h3>
+<table>
+  <thead><tr><th>ID</th><th>Mutante a matar / técnica</th><th>Entrada</th><th>Saída</th><th>VIP</th><th>t (min)</th><th>Resultado esperado</th></tr></thead>
+  <tbody>
+    <tr><td class="id">CT97</td><td>Linha 103, <code>ano &lt; 1</code> → <code>ano &lt;= 1</code>; VL: ano 1 (primeiro ano válido)</td><td>01/01/0001 10:00</td><td>01/01/0001 10:30</td><td class="c">Não</td><td class="c">30</td><td>R$ 15,00</td></tr>
+    <tr><td class="id">CT98</td><td>Linha 103, mesmo mutante; VL: virada do ano 1 para o ano 2 com pernoite</td><td>31/12/0001 23:00</td><td>01/01/0002 09:00</td><td class="c">Não</td><td class="c">600</td><td>R$ 50,00</td></tr>
+  </tbody>
+</table>
+<p>Para os casos CT90-CT92, criados na etapa de cobertura, também está registrado quais mutantes da linha 31 eles matam (Apêndice A).</p>
+
+<h3>4.6 Resultado final</h3>
+<p>Com os 98 casos, o PIT (<code>STRONGER</code>) gera 44 mutantes: 41 são mortos por falha de teste, 1 por <i>timeout</i> e 2 sobrevivem, ambos equivalentes. O escore de mutação é de <b>95,5%</b> (42/44); desconsiderando os equivalentes, de <b>100%</b> (42/42).</p>
+
+<h2>5. Conclusão</h2>
+<p>Com os 9 casos novos (CT90-CT98), o conjunto passa a ter 98 casos, 100% de cobertura de instruções, linhas e ramos, MC/DC nas duas decisões compostas e todos os mutantes não equivalentes mortos. Com base nesses critérios, a classe <code>CalculadoraTarifa</code> entregue (versão corrigida) é <b>aceita</b>. A análise também mostrou que:</p>
+<ul>
+  <li>cobertura de 100% não garante testes eficazes (truncamento e ano 1);</li>
+  <li>o conjunto padrão de operadores do PIT pode esconder fragilidades que a remoção de condicionais revela;</li>
+  <li>mutantes equivalentes apontam código redundante;</li>
+  <li>a análise de mutação não substitui o projeto por valor limite, pois a maioria dos defeitos reais do Trabalho 1 não corresponde a operadores do PIT.</li>
+</ul>
+
+<h2>Apêndice A - Mutantes gerados (PIT, grupo STRONGER, 98 casos)</h2>
+<p>A coluna "Morto por" indica o primeiro caso de teste que detectou o mutante.</p>
+<table>
+  <thead><tr><th>Mutante</th><th>Linha</th><th>Método</th><th>Operador</th><th>Situação</th><th>Morto por</th></tr></thead>
+  <tbody>
+<tr><td>M01</td><td>26</td><td><code>calcular</code></td><td>Retorno primitivo</td><td class=''>Morto</td><td>CT07</td></tr>
+<tr><td>M02</td><td>31</td><td><code>calcular</code></td><td>Remoção de condicional (igualdade → false)</td><td class=''>Morto</td><td>CT03</td></tr>
+<tr><td>M03</td><td>31</td><td><code>calcular</code></td><td>Remoção de condicional (igualdade → false)</td><td class=''>Morto</td><td>CT91</td></tr>
+<tr><td>M04</td><td>31</td><td><code>calcular</code></td><td>Remoção de condicional (igualdade → true)</td><td class=''>Morto</td><td>CT90</td></tr>
+<tr><td>M05</td><td>31</td><td><code>calcular</code></td><td>Remoção de condicional (igualdade → true)</td><td class=''>Morto</td><td>CT03</td></tr>
+<tr><td>M06</td><td>38</td><td><code>calcular</code></td><td>Remoção de chamada void</td><td class=''>Morto</td><td>CT63</td></tr>
+<tr><td>M07</td><td>39</td><td><code>calcular</code></td><td>Remoção de chamada void</td><td class=''>Morto</td><td>CT72</td></tr>
+<tr><td>M08</td><td>41</td><td><code>calcular</code></td><td>Remoção de condicional (igualdade → false)</td><td class=''>Morto</td><td>CT76</td></tr>
+<tr><td>M09</td><td>41</td><td><code>calcular</code></td><td>Remoção de condicional (igualdade → true)</td><td class=''>Morto</td><td>CT03</td></tr>
+<tr><td>M10</td><td>47</td><td><code>calcular</code></td><td>Limite condicional</td><td class=''>Morto</td><td>CT04</td></tr>
+<tr><td>M11</td><td>47</td><td><code>calcular</code></td><td>Remoção de condicional (comparação → false)</td><td class=''>Morto</td><td>CT03</td></tr>
+<tr><td>M12</td><td>47</td><td><code>calcular</code></td><td>Remoção de condicional (comparação → true)</td><td class=''>Morto</td><td>CT07</td></tr>
+<tr><td>M13</td><td>54</td><td><code>calcular</code></td><td>Limite condicional</td><td class=''>Morto</td><td>CT07</td></tr>
+<tr><td>M14</td><td>54</td><td><code>calcular</code></td><td>Remoção de condicional (comparação → false)</td><td class=''>Morto</td><td>CT43</td></tr>
+<tr><td>M15</td><td>54</td><td><code>calcular</code></td><td>Remoção de condicional (comparação → true)</td><td class=''>Morto</td><td>CT07</td></tr>
+<tr><td>M16</td><td>55</td><td><code>calcular</code></td><td>Operador aritmético</td><td class=''>Morto</td><td>CT42</td></tr>
+<tr><td>M17</td><td>56</td><td><code>calcular</code></td><td>Limite condicional</td><td class='sobr'>Sobrevivente</td><td>equivalente</td></tr>
+<tr><td>M18</td><td>56</td><td><code>calcular</code></td><td>Remoção de condicional (comparação → false)</td><td class='sobr'>Sobrevivente</td><td>equivalente</td></tr>
+<tr><td>M19</td><td>56</td><td><code>calcular</code></td><td>Remoção de condicional (comparação → true)</td><td class=''>Morto</td><td>CT22</td></tr>
+<tr><td>M20</td><td>59</td><td><code>calcular</code></td><td>Operador aritmético</td><td class=''>Morto</td><td>CT22</td></tr>
+<tr><td>M21</td><td>61</td><td><code>calcular</code></td><td>Operador aritmético</td><td class=''>Morto</td><td>CT24</td></tr>
+<tr><td>M22</td><td>61</td><td><code>calcular</code></td><td>Operador aritmético</td><td class=''>Morto</td><td>CT22</td></tr>
+<tr><td>M23</td><td>64</td><td><code>calcular</code></td><td>Operador aritmético</td><td class=''>Morto</td><td>CT32</td></tr>
+<tr><td>M24</td><td>64</td><td><code>calcular</code></td><td>Remoção de condicional (igualdade → false)</td><td class=''>Morto</td><td>CT32</td></tr>
+<tr><td>M25</td><td>64</td><td><code>calcular</code></td><td>Remoção de condicional (igualdade → true)</td><td class=''>Morto</td><td>CT07</td></tr>
+<tr><td>M26</td><td>64</td><td><code>calcular</code></td><td>Retorno primitivo</td><td class=''>Morto</td><td>CT07</td></tr>
+<tr><td>M27</td><td>69</td><td><code>validarEntrada</code></td><td>Remoção de condicional (igualdade → false)</td><td class=''>Morto</td><td>CT63</td></tr>
+<tr><td>M28</td><td>69</td><td><code>validarEntrada</code></td><td>Remoção de condicional (igualdade → true)</td><td class=''>Morto</td><td>CT03</td></tr>
+<tr><td>M29</td><td>78</td><td><code>validarSaida</code></td><td>Remoção de condicional (igualdade → false)</td><td class=''>Morto</td><td>CT72</td></tr>
+<tr><td>M30</td><td>78</td><td><code>validarSaida</code></td><td>Remoção de condicional (igualdade → false)</td><td class=''>Morto</td><td>CT72</td></tr>
+<tr><td>M31</td><td>78</td><td><code>validarSaida</code></td><td>Remoção de condicional (igualdade → true)</td><td class=''>Morto</td><td>CT20</td></tr>
+<tr><td>M32</td><td>78</td><td><code>validarSaida</code></td><td>Remoção de condicional (igualdade → true)</td><td class=''>Morto</td><td>CT03</td></tr>
+<tr><td>M33</td><td>88</td><td><code>contarPernoites</code></td><td>Remoção de condicional (igualdade → false)</td><td class=''>Morto</td><td>CT43</td></tr>
+<tr><td>M34</td><td>88</td><td><code>contarPernoites</code></td><td>Remoção de condicional (igualdade → true)</td><td class=''>Morto (timeout)</td><td>timeout: laço infinito</td></tr>
+<tr><td>M35</td><td>89</td><td><code>contarPernoites</code></td><td>Incremento</td><td class=''>Morto</td><td>CT42</td></tr>
+<tr><td>M36</td><td>93</td><td><code>contarPernoites</code></td><td>Retorno primitivo</td><td class=''>Morto</td><td>CT43</td></tr>
+<tr><td>M37</td><td>98</td><td><code>divisaoParaCima</code></td><td>Operador aritmético</td><td class=''>Morto</td><td>CT22</td></tr>
+<tr><td>M38</td><td>98</td><td><code>divisaoParaCima</code></td><td>Operador aritmético</td><td class=''>Morto</td><td>CT22</td></tr>
+<tr><td>M39</td><td>98</td><td><code>divisaoParaCima</code></td><td>Operador aritmético</td><td class=''>Morto</td><td>CT22</td></tr>
+<tr><td>M40</td><td>98</td><td><code>divisaoParaCima</code></td><td>Retorno primitivo</td><td class=''>Morto</td><td>CT22</td></tr>
+<tr><td>M41</td><td>103</td><td><code>criarDataHora</code></td><td>Limite condicional</td><td class=''>Morto</td><td>CT98</td></tr>
+<tr><td>M42</td><td>103</td><td><code>criarDataHora</code></td><td>Remoção de condicional (comparação → false)</td><td class=''>Morto</td><td>CT85</td></tr>
+<tr><td>M43</td><td>103</td><td><code>criarDataHora</code></td><td>Remoção de condicional (comparação → true)</td><td class=''>Morto</td><td>CT03</td></tr>
+<tr><td>M44</td><td>108</td><td><code>criarDataHora</code></td><td>Retorno nulo</td><td class=''>Morto</td><td>CT03</td></tr>
+  </tbody>
+</table>
+
+<h2>Apêndice B - Arquivos entregues</h2>
+<table>
+  <thead><tr><th>Arquivo</th><th>Conteúdo</th></tr></thead>
+  <tbody>
+    <tr><td><code>pom.xml</code></td><td>Configuração do JaCoCo (<code>prepare-agent</code> e <code>report</code> na fase <code>test</code>) e do PIT (grupo <code>STRONGER</code>, relatórios HTML e XML).</td></tr>
+    <tr><td><code>src/main/java/.../CalculadoraTarifa.java</code></td><td>Classe testada (versão corrigida do T1, sem alterações).</td></tr>
+    <tr><td><code>TarifaPermanenciaTest</code>, <code>TarifaPernoiteTest</code>, <code>TarifaEntradasInvalidasTest</code></td><td>Drivers do T1 (CT01-CT89).</td></tr>
+    <tr><td><code>TarifaCoberturaTest</code> + <code>casos_cobertura_*.csv</code></td><td>Casos da análise de cobertura (CT90-CT96).</td></tr>
+    <tr><td><code>TarifaMutacaoTest</code> + <code>casos_mutacao.csv</code></td><td>Casos da análise de mutação (CT97-CT98).</td></tr>
+  </tbody>
+</table>
+
+</body>
+</html>

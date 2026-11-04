@@ -20,6 +20,8 @@ git checkout fase-1-caixa-preta
 ## Estrutura
 
 - `t2_2026_2.pdf` — enunciado do Trabalho 2.
+- `relatorio/relatorio_t2.pdf` — relatório do Trabalho 2: análise crítica da cobertura e do teste de mutação,
+  com os novos casos de teste (CT90–CT98). `relatorio_t2.html` é a fonte do PDF (impressão do navegador).
 - `trab1/casos_de_teste.pdf` — projeto dos casos de teste (fase 1).
 - `trab1/relatorio_defeitos.pdf` — defeitos encontrados na primeira versão (fase 1).
 - `trab1/trabalho-estacionamento/` — projeto Maven (Java 17, JUnit 5):
