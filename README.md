@@ -1,74 +1,74 @@
-# Testes caixa-preta e caixa-branca
+# Black-box and White-box Testing
 
-Estudo de verificação e validação de software sobre uma regra de negócio real: o cálculo da tarifa de um
-estacionamento (cortesia de 20 minutos, tarifa fixa até 1 hora, adicional por hora, pernoite e desconto VIP),
-implementado na classe Java `CalculadoraTarifa`.
+A software verification and validation study built around a real business rule: calculating a parking lot fee
+(20-minute grace period, flat rate up to 1 hour, hourly surcharge, overnight stay and VIP discount),
+implemented in the Java class `CalculadoraTarifa`.
 
-O conjunto de testes foi construído em duas fases. Primeiro, os casos foram projetados só a partir da
-especificação (caixa-preta). Depois, esses casos foram avaliados e complementados com base no código
-(caixa-branca).
+The test suite was built in two phases. First, test cases were designed from the specification alone
+(black-box). Then those cases were evaluated and extended based on the code (white-box).
 
-## Resultados
+## Results
 
-| Fase | Técnicas | Resultado | Marco |
-|------|----------|-----------|-------|
-| 1 — Caixa-preta | Particionamento em classes de equivalência e análise de valor limite | 89 casos de teste; 7 defeitos encontrados na primeira versão da implementação | tag `fase-1-caixa-preta` |
-| 2 — Caixa-branca | Cobertura de código ([JaCoCo](https://www.jacoco.org/jacoco/)), MC/DC e teste de mutação ([PIT](https://pitest.org/)) | 98 casos; 100% de instruções, linhas e ramos; 42 de 44 mutantes mortos (os 2 restantes são equivalentes) | tag `fase-2-caixa-branca` |
+| Phase | Techniques | Result | Milestone |
+|-------|------------|--------|-----------|
+| 1 — Black-box | Equivalence class partitioning and boundary value analysis | 89 test cases; 7 defects found in the first version of the implementation | tag `fase-1-caixa-preta` |
+| 2 — White-box | Code coverage ([JaCoCo](https://www.jacoco.org/jacoco/)), MC/DC and mutation testing ([PIT](https://pitest.org/)) | 98 cases; 100% instruction, line and branch coverage; 42 of 44 mutants killed (the remaining 2 are equivalent) | tag `fase-2-caixa-branca` |
 
-Alguns achados da fase 2:
+Key findings from phase 2:
 
-- Cobertura de 100% não garante testes eficazes. O truncamento de segundos era executado por todos os casos,
-  mas nenhum verificava o seu efeito.
-- O conjunto padrão de operadores do PIT escondia uma validação que podia ser removida sem nenhum teste
-  falhar. A remoção de condicionais (`STRONGER`) revelou o problema.
-- Os mutantes equivalentes apontaram um ramo redundante no código.
-- Só 1 dos 7 defeitos reais da fase 1 corresponde a um operador de mutação do PIT. A análise de mutação
-  não substitui o projeto por valor limite.
+- 100% coverage does not guarantee effective tests. Every case executed the truncation of seconds,
+  but none of them checked its effect.
+- PIT's default mutation operators hid a validation that could be removed without any test failing.
+  Conditional removal (`STRONGER`) exposed the problem.
+- The equivalent mutants pointed to a redundant branch in the code.
+- Only 1 of the 7 real defects from phase 1 matches a PIT mutation operator. Mutation analysis does not
+  replace boundary value design.
 
-## Estrutura
+## Structure
 
-Projeto Maven (Java 17, JUnit 5):
+Maven project (Java 17, JUnit 5):
 
 ```
-src/main/java/         Versão corrigida da CalculadoraTarifa
-src/test/java/         Drivers JUnit parametrizados (@CsvFileSource)
-src/test/resources/    Casos de teste em CSV (CT01–CT98)
-versoes/versao1/       Primeira versão, com defeitos
+src/main/java/         Fixed version of CalculadoraTarifa
+src/test/java/         Parameterized JUnit drivers (@CsvFileSource)
+src/test/resources/    Test cases as CSV (CT01–CT98)
+versoes/versao1/       First version, with defects
 ```
 
-## Como executar
+## Running
 
-Requisitos: JDK 17 ou superior e Maven 3.9.
+Requires JDK 17 or later and Maven 3.9.
 
 ```bash
 mvn test
 ```
 
-Executa os 98 casos sobre a versão corrigida e gera o relatório de cobertura em `target/site/jacoco/index.html`.
+Runs the 98 cases against the fixed version and generates the coverage report at `target/site/jacoco/index.html`.
 
 ```bash
 mvn test -Pv1
 ```
 
-Executa os mesmos casos sobre a primeira versão, com defeitos.
+Runs the same cases against the first version, with defects.
 
 ```bash
 mvn test-compile org.pitest:pitest-maven:mutationCoverage
 ```
 
-Executa o teste de mutação e gera o relatório em `target/pit-reports/index.html`.
+Runs mutation testing and generates the report at `target/pit-reports/index.html`.
 
-Para ver o projeto como estava ao fim da fase 1:
+To see the project as it was at the end of phase 1:
 
 ```bash
 git checkout fase-1-caixa-preta
 ```
 
-## Contexto
+## Context
 
-Desenvolvido como os Trabalhos 1 e 2 da disciplina Verificação e Validação de Software da PUCRS (2026/2).
+Developed as Assignments 1 and 2 of the Software Verification and Validation course at PUCRS (2026/2).
+The code, test cases and CSV files are in Portuguese.
 
-## Autores
+## Authors
 
 - Nícolas Vargas ([@vargasnico](https://github.com/vargasnico))
 - Paulo Trevisan ([@PauloTrevisan](https://github.com/PauloTrevisan))
